@@ -6,6 +6,7 @@ Run from the repository root on Linux with Python 3, g++, and ar:
 python3 tests/native/run.py
 python3 tests/native/run.py --disable-assertions
 python3 tests/native/run.py --sanitize --test packet_buffer
+python3 tests/native/radio_read.py
 ```
 
 The tests compile the real wmbus common sources, Tauron and Apator drivers,
@@ -24,3 +25,7 @@ UndefinedBehaviorSanitizer, including the three-byte preamble decoder.
 
 The stubs replace ESPHome logging, scheduling, and radio interfaces only.
 These tests do not validate ESP32 hardware, radio reception, or OTA updates.
+
+The standalone radio-read test compiles the actual read method with simulated
+FIFO reads and FreeRTOS notifications. It checks timeout diagnostics and bytes
+that become available without a notification, with memory sanitizers enabled.

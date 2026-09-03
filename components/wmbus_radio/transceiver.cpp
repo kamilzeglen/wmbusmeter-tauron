@@ -17,6 +17,7 @@ namespace esphome
         {
             const uint8_t *buffer_start = buffer;
             const uint8_t *buffer_end = buffer + length;
+            size_t recovered_bytes = 0;
 
             while (buffer != buffer_end)
             {
@@ -28,6 +29,13 @@ namespace esphome
                 }
                 if (ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1)) == 0)
                 {
+                    auto pending_byte = this->read();
+                    if (pending_byte.has_value())
+                    {
+                        *buffer++ = *pending_byte;
+                        ++recovered_bytes;
+                        continue;
+                    }
                     const size_t received = buffer - buffer_start;
                     ESP_LOGD(TAG, "Incomplete radio read: received %zu/%zu bytes", received, length);
                     for (size_t offset = 0; offset < received; offset += 32)
@@ -40,6 +48,10 @@ namespace esphome
                 }
             }
 
+            if (recovered_bytes > 0)
+            {
+                ESP_LOGD(TAG, "Radio read completed: recovered %zu bytes after notification timeout", recovered_bytes);
+            }
             return true;
         }
 
