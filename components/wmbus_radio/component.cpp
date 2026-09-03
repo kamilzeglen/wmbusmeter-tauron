@@ -101,6 +101,10 @@ namespace esphome
       if (this->radio->read_in_task(payload_buffer.data, payload_buffer.size) == false)
       {
         ESP_LOGW(TAG, "Failed to read data");
+        ESP_LOGD(TAG, "Incomplete packet: RSSI=%ddBm, preamble=%s, expected=%zu bytes",
+                 this->radio->get_rssi(),
+                 format_hex(payload_buffer.data - preamble_buffer.size, preamble_buffer.size).c_str(),
+                 preamble_buffer.size + payload_buffer.size);
         return;
       }
 

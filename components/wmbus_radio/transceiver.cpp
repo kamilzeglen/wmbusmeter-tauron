@@ -1,6 +1,9 @@
 #include "transceiver.h"
 
+#include <algorithm>
+
 #include "esphome/core/log.h"
+#include "esphome/core/helpers.h"
 
 #include "freertos/FreeRTOS.h"
 
@@ -12,18 +15,29 @@ namespace esphome
 
         bool RadioTransceiver::read_in_task(uint8_t *buffer, size_t length)
         {
+            const uint8_t *buffer_start = buffer;
             const uint8_t *buffer_end = buffer + length;
-            int wait_count = 0;
 
             while (buffer != buffer_end)
             {
                 auto byte = this->read();
                 if (byte.has_value())
+                {
                     *buffer++ = *byte;
-                else if (!ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1)))
+                    continue;
+                }
+                if (ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1)) == 0)
+                {
+                    const size_t received = buffer - buffer_start;
+                    ESP_LOGD(TAG, "Incomplete radio read: received %zu/%zu bytes", received, length);
+                    for (size_t offset = 0; offset < received; offset += 32)
+                    {
+                        const size_t chunk_size = std::min(size_t{32}, received - offset);
+                        ESP_LOGD(TAG, "RAW[%zu]: %s", offset,
+                                 format_hex(buffer_start + offset, chunk_size).c_str());
+                    }
                     return false;
-                else
-                    wait_count++;
+                }
             }
 
             return true;
