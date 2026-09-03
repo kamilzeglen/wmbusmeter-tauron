@@ -47,7 +47,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_gransystems = registerDriver([](DriverInfo&di)
     {
         di.setName("gransystems");
         di.setDefaultFields("name,id,total_energy_consumption_kwh,timestamp");

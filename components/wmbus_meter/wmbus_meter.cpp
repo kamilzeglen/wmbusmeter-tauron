@@ -8,13 +8,28 @@ namespace esphome
 
         void Meter::set_meter_params(std::string id, std::string driver, std::string key, std::initializer_list<LinkMode> linkModes)
         {
+            this->configured_id_ = id;
+            this->configured_driver_ = driver;
             MeterInfo meter_info;
-            meter_info.parse(driver + '-' + id, driver, id + ",", key);
+            if (meter_info.parse(driver + '-' + id, driver, id + ",", key) == false)
+            {
+                return;
+            }
 
             this->meter = createMeter(&meter_info);
 
             for (auto linkMode : linkModes)
                 this->link_modes_.addLinkMode(linkMode);
+        }
+
+        void Meter::setup()
+        {
+            if (this->meter == nullptr)
+            {
+                ESP_LOGE(TAG, "Failed to initialize driver '%s' for meter 0x%s",
+                         this->configured_driver_.c_str(), this->configured_id_.c_str());
+                this->mark_failed();
+            }
         }
         void Meter::set_radio(wmbus_radio::Radio *radio)
         {
@@ -36,23 +51,43 @@ namespace esphome
 
         std::string Meter::get_id()
         {
+            if (this->meter == nullptr)
+            {
+                return this->configured_id_;
+            }
+
             std::vector<AddressExpression> address_expressions = this->meter->addressExpressions();
             return address_expressions.size() > 0 ? address_expressions[0].id : "unknown";
         }
 
         std::string Meter::get_driver()
         {
+            if (this->meter == nullptr)
+            {
+                return this->configured_driver_;
+            }
+
             return this->meter->driverName().str();
         }
 
         std::string Meter::get_key()
         {
+            if (this->meter == nullptr)
+            {
+                return "unavailable";
+            }
+
             MeterKeys *keys = this->meter->meterKeys();
             return keys->hasConfidentialityKey() ? bin2hex(keys->confidentiality_key) : "not-encrypted";
         }
 
         void Meter::handle_frame(wmbus_radio::Frame *frame)
         {
+            if (this->meter == nullptr)
+            {
+                return;
+            }
+
             if (!this->link_modes_.has(frame->link_mode()))
             {
                 ESP_LOGW(TAG, "Frame link mode %s not supported by meter %s",
@@ -82,6 +117,11 @@ namespace esphome
 
         std::string Meter::as_json(bool pretty_print)
         {
+            if (this->meter == nullptr)
+            {
+                return "{}";
+            }
+
             std::string json;
             this->meter->printMeter(this->last_telegram.get(), nullptr, nullptr, '\t', &json, nullptr, nullptr, nullptr, pretty_print);
             return json;
@@ -89,6 +129,11 @@ namespace esphome
 
         optional<std::string> Meter::get_string_field(std::string field_name)
         {
+            if (this->meter == nullptr)
+            {
+                return {};
+            }
+
             
             if (field_name == "timestamp")
                 return this->meter->datetimeOfUpdateHumanReadable();
@@ -105,6 +150,11 @@ namespace esphome
 
         optional<float> Meter::get_numeric_field(std::string field_name)
         {
+            if (this->meter == nullptr)
+            {
+                return {};
+            }
+
             // RSSI is not handled by meter but by telegram :/
             if (field_name == "rssi_dbm")
                 return this->last_telegram->about.rssi_dbm;

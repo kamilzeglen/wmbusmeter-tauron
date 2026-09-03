@@ -25,7 +25,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_iperl = registerDriver([](DriverInfo&di)
     {
         di.setName("iperl");
         di.setDefaultFields("name,id,total_m3,max_flow_m3h,timestamp");

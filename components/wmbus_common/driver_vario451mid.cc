@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_vario451mid = registerDriver([](DriverInfo&di)
     {
         di.setName("vario451mid");
         di.setDefaultFields("name,id,total_energy_consumption_kwh,energy_at_old_date_kwh,energy_at_set_date_kwh,timestamp");

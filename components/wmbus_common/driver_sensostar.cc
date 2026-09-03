@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_sensostar = registerDriver([](DriverInfo&di)
     {
         di.setName("sensostar");
         di.setDefaultFields("name,id,total_kwh,total_water_m3,current_status,reporting_date,energy_consumption_at_reporting_date_kwh,timestamp");

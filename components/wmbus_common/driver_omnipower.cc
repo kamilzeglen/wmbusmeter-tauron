@@ -44,7 +44,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_omnipower = registerDriver([](DriverInfo&di)
     {
         di.setName("omnipower");
         di.setDefaultFields("name,id,total_energy_consumption_kwh,total_energy_production_kwh,"

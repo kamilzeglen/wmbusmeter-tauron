@@ -26,7 +26,7 @@ namespace
         void processContent(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_vario451 = registerDriver([](DriverInfo&di)
     {
         di.setName("vario451");
         di.setDefaultFields("name,id,total_kwh,current_kwh,previous_kwh,timestamp");

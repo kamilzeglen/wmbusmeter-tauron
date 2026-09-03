@@ -26,7 +26,7 @@ namespace
         void processContent(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_mkradio3 = registerDriver([](DriverInfo&di)
     {
         di.setName("mkradio3");
         di.setDefaultFields("name,id,total_m3,target_m3,current_date,prev_date,timestamp");

@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_piigth = registerDriver([](DriverInfo&di)
     {
         di.setName("piigth");
         di.setDefaultFields("name,id,status,temperature_c,relative_humidity_rh,timestamp");

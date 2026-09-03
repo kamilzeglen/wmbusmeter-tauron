@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_hcae2 = registerDriver([](DriverInfo&di)
     {
         di.setName("hcae2");
         di.setDefaultFields("name,id,current_consumption_hca,status,timestamp");

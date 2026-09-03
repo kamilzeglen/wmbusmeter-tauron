@@ -25,7 +25,7 @@ namespace
         void processContent(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_wme5 = registerDriver([](DriverInfo&di)
     {
         di.setName("wme5");
         di.setDefaultFields("name,id,total_m3,total_hex,timestamp");

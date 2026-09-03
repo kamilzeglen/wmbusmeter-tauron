@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_em24 = registerDriver([](DriverInfo&di)
     {
         di.setName("em24");
         di.setDefaultFields(

@@ -23,7 +23,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_enercal = registerDriver([](DriverInfo&di)
     {
         di.setName("enercal");
         di.setDefaultFields("name,id,status,total_kwh,target_kwh,total_m3,target_m3,timestamp");

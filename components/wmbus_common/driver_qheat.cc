@@ -28,7 +28,7 @@ namespace
       void processContent(Telegram *t) override;
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_qheat = registerDriver([](DriverInfo&di)
     {
         di.setName("qheat");
         di.setDefaultFields("name,id,total_energy_consumption_kwh,last_month_date,last_month_energy_consumption_kwh,timestamp");

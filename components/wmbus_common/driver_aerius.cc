@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_aerius = registerDriver([](DriverInfo&di)
     {
         di.setName("aerius");
         di.setDefaultFields("name,id,total_m3,timestamp");

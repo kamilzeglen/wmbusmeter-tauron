@@ -44,7 +44,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_topaseskr = registerDriver([](DriverInfo&di)
     {
         di.setName("topaseskr");
         di.setDefaultFields(

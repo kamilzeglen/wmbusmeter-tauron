@@ -27,7 +27,7 @@ namespace
         void processContent(Telegram *t) override;
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_qwater = registerDriver([](DriverInfo&di)
     {
         di.setName("qwater");
         di.setDefaultFields("name,id,total_m3,"

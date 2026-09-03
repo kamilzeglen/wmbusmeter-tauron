@@ -23,7 +23,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_multical21 = registerDriver([](DriverInfo&di)
     {
         di.setName("multical21");
         di.setDefaultFields("name,id,total_m3,target_m3,max_flow_m3h,flow_temperature_c,external_temperature_c,status,timestamp");

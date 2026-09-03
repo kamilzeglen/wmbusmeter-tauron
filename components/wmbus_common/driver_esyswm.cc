@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_esyswm = registerDriver([](DriverInfo&di)
     {
         di.setName("esyswm");
         di.setDefaultFields("name,id,total_energy_consumption_kwh,current_power_consumption_kw,total_energy_production_kwh,total_energy_consumption_tariff1_kwh,total_energy_consumption_tariff2_kwh,current_power_consumption_phase1_kw,current_power_consumption_phase2_kw,current_power_consumption_phase3_kw,enhanced_id,timestamp");

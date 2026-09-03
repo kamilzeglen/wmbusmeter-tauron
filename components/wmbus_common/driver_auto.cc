@@ -24,7 +24,7 @@ struct MeterAuto : public virtual MeterCommonImplementation
     MeterAuto(MeterInfo &mi, DriverInfo &di);
 };
 
-bool ok = registerDriver([](DriverInfo&di)
+extern "C" const bool wmbus_driver_auto = registerDriver([](DriverInfo&di)
 {
     di.setName("auto");
     di.setDefaultFields("name,id,timestamp");

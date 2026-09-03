@@ -55,7 +55,7 @@ namespace
         vector<uint32_t> keys;
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_izar = registerDriver([](DriverInfo&di)
     {
         di.setName("izar");
         di.setDefaultFields("name,id,prefix,serial_number,total_m3,last_month_total_m3,"

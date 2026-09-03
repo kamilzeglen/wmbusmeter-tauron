@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_q400 = registerDriver([](DriverInfo&di)
     {
         di.setName("q400");
         di.setDefaultFields("name,id,total_m3,timestamp");

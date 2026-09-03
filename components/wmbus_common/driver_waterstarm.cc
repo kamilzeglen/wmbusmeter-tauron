@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_waterstarm = registerDriver([](DriverInfo&di)
     {
         di.setName("waterstarm");
         di.setDefaultFields("name,id,total_m3,total_backwards_m3,status,timestamp");

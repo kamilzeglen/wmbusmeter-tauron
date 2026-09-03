@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_qualcosonic = registerDriver([](DriverInfo&di)
     {
         di.setName("qualcosonic");
         di.setDefaultFields("name,id,status,total_heat_energy_kwh,total_cooling_energy_kwh,"

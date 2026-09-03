@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_lse_07_17 = registerDriver([](DriverInfo&di)
         {
             di.setName("lse_07_17");
             di.setDefaultFields("name,id,total_m3,due_date_m3,due_date,error_code,error_date,device_date_time,timestamp");

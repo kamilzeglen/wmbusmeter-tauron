@@ -25,7 +25,7 @@ namespace {
             void processContent(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo &di) {
+    extern "C" const bool wmbus_driver_hydrodigit = registerDriver([](DriverInfo &di) {
         di.setName("hydrodigit");
         di.setDefaultFields("name,id,total_m3,meter_datetime,timestamp");
         di.setMeterType(MeterType::WaterMeter);

@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_cma12w = registerDriver([](DriverInfo&di)
     {
         di.setName("cma12w");
         di.setDefaultFields("name,id,current_temperature_c,timestamp");

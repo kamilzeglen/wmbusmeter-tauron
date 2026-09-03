@@ -24,7 +24,7 @@ struct MeterUnknown : public virtual MeterCommonImplementation
     MeterUnknown(MeterInfo &mi, DriverInfo &di);
 };
 
-static bool ok = registerDriver([](DriverInfo&di)
+extern "C" const bool wmbus_driver_unknown = registerDriver([](DriverInfo&di)
 {
     di.setName("unknown");
     di.setDefaultFields("name,id,timestamp");

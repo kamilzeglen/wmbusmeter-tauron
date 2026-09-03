@@ -3,6 +3,7 @@ from esphome.const import SOURCE_FILE_EXTENSIONS, CONF_ID
 from esphome.loader import get_component, ComponentManifest
 from esphome import codegen as cg
 from pathlib import Path
+from .driver_registry import driver_linker_flags
 
 CODEOWNERS = ["@SzczepanLeon", "@kubasaw"]
 CONF_DRIVERS = "drivers"
@@ -51,6 +52,9 @@ async def to_code(config):
     component = get_component("wmbus_common")
     component.__class__ = WMBusComponentManifest
     component.exclude_drivers = AVAILABLE_DRIVERS - _registered_drivers
+
+    for flag in driver_linker_flags(_registered_drivers):
+        cg.add_build_flag(flag)
 
     var = cg.new_Pvariable(config[CONF_ID], sorted(_registered_drivers))
     await cg.register_component(var, config)

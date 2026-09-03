@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_vario411 = registerDriver([](DriverInfo&di)
     {
         di.setName("vario411");
         di.setDefaultFields("name,id,target_kwh,target_date,timestamp");

@@ -50,7 +50,7 @@ namespace
         // return_temperature_c
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_c5isf = registerDriver([](DriverInfo&di)
     {
         di.setName("c5isf");
         di.setDefaultFields("name,id,total_energy_consumption_kwh,total_volume_m3,status,timestamp");

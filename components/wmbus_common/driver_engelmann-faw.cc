@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_engelmann_faw = registerDriver([](DriverInfo&di)
     {
         di.setName("engelmann-faw");
         di.setDefaultFields("name,id,status,reporting_date,consumption_at_reporting_date_m3,timestamp");

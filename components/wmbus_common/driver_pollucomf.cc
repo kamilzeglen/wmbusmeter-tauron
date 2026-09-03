@@ -23,7 +23,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_pollucomf = registerDriver([](DriverInfo&di)
     {
         di.setName("pollucomf");
         di.setDefaultFields("name,id,status,total_kwh,total_m3,target_kwh,target_m3,timestamp");

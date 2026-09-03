@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_evo868 = registerDriver([](DriverInfo&di)
     {
         di.setName("evo868");
         di.setDefaultFields("name,id,total_m3,current_status,consumption_at_set_date_m3,set_date,timestamp");

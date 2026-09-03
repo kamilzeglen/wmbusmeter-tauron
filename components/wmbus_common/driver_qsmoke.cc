@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_qsmoke = registerDriver([](DriverInfo&di)
     {
         di.setName("qsmoke");
         di.setDefaultFields("name,id,status,last_alarm_date,alarm_counter,timestamp");

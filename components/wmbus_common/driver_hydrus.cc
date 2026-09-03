@@ -25,7 +25,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_hydrus = registerDriver([](DriverInfo&di)
     {
         di.setName("hydrus");
         di.setDefaultFields("name,id,total_m3,total_at_date_m3,status,timestamp");

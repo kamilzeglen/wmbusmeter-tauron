@@ -71,6 +71,7 @@ DriverInfo *lookupDriver(string name)
 
 vector<DriverInfo*> &allDrivers()
 {
+    verifyDriverLookupCreated();
     return *registered_drivers_list_;
 }
 

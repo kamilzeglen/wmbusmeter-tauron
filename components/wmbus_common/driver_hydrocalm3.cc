@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_hydrocalm3 = registerDriver([](DriverInfo&di)
     {
         di.setName("hydrocalm3");
         di.setDefaultFields("name,id,total_heating_kwh,total_cooling_kwh,timestamp");

@@ -29,7 +29,7 @@ namespace
         string leadingZeroString(int num);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_fhkvdataiii = registerDriver([](DriverInfo&di)
     {
         di.setName("fhkvdataiii");
         di.setDefaultFields("name,id,current_hca,current_date,previous_hca,previous_date,temp_room_c,temp_radiator_c,timestamp");

@@ -23,7 +23,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_ultrimis = registerDriver([](DriverInfo&di)
     {
         di.setName("ultrimis");
         di.setDefaultFields("name,id,total_m3,target_m3,current_status,total_backward_flow_m3,timestamp");

@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_ei6500 = registerDriver([](DriverInfo&di)
     {
         di.setName("ei6500");
         di.setDefaultFields("name,id,status,last_alarm_date,alarm_counter,timestamp");

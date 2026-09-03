@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_lansenth = registerDriver([](DriverInfo&di)
     {
         di.setName("lansenth");
         di.setDefaultFields("name,id,current_temperature_c,current_relative_humidity_rh,timestamp");

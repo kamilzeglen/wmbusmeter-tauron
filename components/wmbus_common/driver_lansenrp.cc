@@ -26,7 +26,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_lansenrp = registerDriver([](DriverInfo&di)
     {
         di.setName("lansenrp");
         di.setDefaultFields("name,id,status,total_routed_messages_counter,used_router_slots_counter,is_repeater_listening,timestamp");

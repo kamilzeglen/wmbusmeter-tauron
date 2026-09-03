@@ -26,7 +26,7 @@ namespace
         void processContent(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_bfw240radio = registerDriver([](DriverInfo&di)
     {
         di.setName("bfw240radio");
         di.setDefaultFields("name,id,current_hca,prev_hca,timestamp");

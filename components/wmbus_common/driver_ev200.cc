@@ -25,7 +25,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_ev200 = registerDriver([](DriverInfo&di)
     {
         di.setName("ev200");
         di.setDefaultFields("name,id,total_m3,target_m3,timestamp");

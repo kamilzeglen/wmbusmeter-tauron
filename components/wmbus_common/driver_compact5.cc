@@ -26,7 +26,7 @@ namespace
         void processContent(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_compact5 = registerDriver([](DriverInfo&di)
     {
         di.setName("compact5");
         di.setDefaultFields("name,id,total_kwh,current_kwh,previous_kwh,timestamp");

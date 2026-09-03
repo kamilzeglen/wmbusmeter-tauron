@@ -35,7 +35,7 @@ namespace
         // prev_month_kwh[13] - 13 past month readings, storagenr 2 to 14
     };
 
-    static bool ok = registerDriver([](DriverInfo &di)
+    extern "C" const bool wmbus_driver_qheat_55_us = registerDriver([](DriverInfo &di)
         {
             di.setName("qheat_55_us");
             di.setDefaultFields("name,id,total_energy_consumption_kwh,key_date_kwh,timestamp");

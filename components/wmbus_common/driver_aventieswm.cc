@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_aventieswm = registerDriver([](DriverInfo&di)
     {
         di.setName("aventieswm");
         di.setDefaultFields("name,id,total_m3,error_flags,timestamp");

@@ -25,7 +25,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_kamheat = registerDriver([](DriverInfo&di)
     {
         di.setName("kamheat");
         di.addNameAlias("multical302");

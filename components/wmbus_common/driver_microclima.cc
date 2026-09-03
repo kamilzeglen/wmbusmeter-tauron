@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_microclima = registerDriver([](DriverInfo&di)
     {
         di.setName("microclima");
         di.setDefaultFields("name,id,status,total_energy_consumption_kwh,total_volume_m3,timestamp");

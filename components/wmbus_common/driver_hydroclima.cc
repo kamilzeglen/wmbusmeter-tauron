@@ -27,7 +27,7 @@ namespace
         void decodeRF_RKN9(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_hydroclima = registerDriver([](DriverInfo&di)
     {
         di.setName("hydroclima");
         di.setDefaultFields("name,id,current_consumption_hca,average_ambient_temperature_c,timestamp");

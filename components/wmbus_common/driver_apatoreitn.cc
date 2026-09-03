@@ -28,7 +28,7 @@ namespace
         string dateToString(uchar date_lo, uchar date_hi);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_apatoreitn = registerDriver([](DriverInfo&di)
     {
         // Note: this supports only E.ITN 30.51 at the moment.
         // E.ITN 30.60 should be similar, as it is covered via the same datasheet

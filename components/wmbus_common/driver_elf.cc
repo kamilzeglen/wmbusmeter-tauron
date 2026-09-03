@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_elf = registerDriver([](DriverInfo&di)
     {
         di.setName("elf");
         di.setDefaultFields("name,id,total_energy_consumption_kwh,current_power_consumption_kw,total_volume_m3,flow_temperature_c,return_temperature_c,external_temperature_c,status,timestamp");

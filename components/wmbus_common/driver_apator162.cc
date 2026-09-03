@@ -28,7 +28,7 @@ namespace
         int registerSize(int c);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_apator162 = registerDriver([](DriverInfo&di)
     {
         di.setName("apator162");
         di.setDefaultFields("name,id,total_m3,timestamp");

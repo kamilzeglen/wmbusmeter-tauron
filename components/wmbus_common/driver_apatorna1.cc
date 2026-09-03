@@ -28,7 +28,7 @@ namespace
         void processContent(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_apatorna1 = registerDriver([](DriverInfo&di)
     {
         di.setName("apatorna1");
         di.setDefaultFields("name,id,total_m3,timestamp");

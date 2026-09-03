@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_kampress = registerDriver([](DriverInfo&di)
     {
         di.setName("kampress");
         di.setDefaultFields("name,id,status,pressure_bar,max_pressure_bar,min_pressure_bar,timestamp");

@@ -25,7 +25,7 @@ namespace
         void processContent(Telegram *t);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_rfmtx1 = registerDriver([](DriverInfo&di)
     {
         di.setName("rfmtx1");
         di.setDefaultFields("name,id,total_m3,meter_datetime,timestamp");

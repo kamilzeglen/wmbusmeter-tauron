@@ -24,7 +24,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_aventieshca = registerDriver([](DriverInfo&di)
     {
         di.setName("aventieshca");
         di.setDefaultFields("name,id,current_consumption_hca,error_flags,timestamp");

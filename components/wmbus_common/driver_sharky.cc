@@ -25,7 +25,7 @@ namespace
         Driver(MeterInfo &mi, DriverInfo &di);
     };
 
-    static bool ok = registerDriver([](DriverInfo&di)
+    extern "C" const bool wmbus_driver_sharky = registerDriver([](DriverInfo&di)
     {
         // This is the sharky 775 heat meter driver, should this merge with the sharky 774 driver?
         di.setName("sharky");
