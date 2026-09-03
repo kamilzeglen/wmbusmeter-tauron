@@ -262,7 +262,7 @@ struct PrintProperties
 
     bool hasREQUIRED() { return props_ & PrintProperty::REQUIRED; }
     bool hasDEPRECATED() { return props_ & PrintProperty::DEPRECATED; }
-    bool hasSTATUS() { return props_ & PrintProperty::STATUS; }
+    bool hasSTATUS() { return props_ & PrintProperty::STATUS_FIELD; }
     bool hasINCLUDETPLSTATUS() { return props_ & PrintProperty::INCLUDE_TPL_STATUS; }
     bool hasINJECTINTOSTATUS() { return props_ & PrintProperty::INJECT_INTO_STATUS; }
     bool hasHIDE() { return props_ & PrintProperty::HIDE; }
