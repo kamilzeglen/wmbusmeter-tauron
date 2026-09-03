@@ -45,8 +45,10 @@ namespace esphome
         auto bit_offset = bit_idx % 8;
 
         uint8_t code = (data[byte_idx] << bit_offset);
-        if (bit_offset > 0)
+        if (bit_offset > 2)
+        {
           code |= (data[byte_idx + 1] >> (8 - bit_offset));
+        }
         code >>= 2;
 
         auto it = lookupTable.find(code);

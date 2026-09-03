@@ -84,7 +84,8 @@ namespace esphome
       }
       auto packet = std::make_unique<Packet>();
 
-      if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity()))
+      auto preamble_buffer = packet->prepare_rx_buffer();
+      if (this->radio->read_in_task(preamble_buffer.data, preamble_buffer.size) == false)
       {
         ESP_LOGV(TAG, "Failed to read preamble");
         return;
@@ -96,7 +97,8 @@ namespace esphome
         return;
       }
 
-      if (!this->radio->read_in_task(packet->rx_data_ptr(), packet->rx_capacity()))
+      auto payload_buffer = packet->prepare_rx_buffer();
+      if (this->radio->read_in_task(payload_buffer.data, payload_buffer.size) == false)
       {
         ESP_LOGW(TAG, "Failed to read data");
         return;

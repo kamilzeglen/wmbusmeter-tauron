@@ -21,8 +21,13 @@ namespace esphome
         public:
             Packet();
 
-            uint8_t *rx_data_ptr();
-            size_t rx_capacity();
+            struct ReceiveBuffer
+            {
+                uint8_t *data;
+                size_t size;
+            };
+
+            ReceiveBuffer prepare_rx_buffer();
             bool calculate_payload_size();
             void set_rssi(int8_t rssi);
 

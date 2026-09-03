@@ -80,17 +80,12 @@ namespace esphome
             return this->expected_size_;
         }
 
-        size_t Packet::rx_capacity()
+        Packet::ReceiveBuffer Packet::prepare_rx_buffer()
         {
-            // TODO: Remove side effects?
-            auto cap = this->data_.capacity() - this->data_.size();
-            this->data_.resize(this->data_.capacity());
-            return cap;
-        }
-
-        uint8_t *Packet::rx_data_ptr()
-        {
-            return this->data_.data() + this->data_.size();
+            const size_t offset = this->data_.size();
+            const size_t total_size = this->expected_size_ > 0 ? this->expected_size_ : WMBUS_PREAMBLE_SIZE;
+            this->data_.resize(total_size);
+            return {this->data_.data() + offset, total_size - offset};
         }
 
         bool Packet::calculate_payload_size()
@@ -113,9 +108,13 @@ namespace esphome
             }
 
             removeAnyDLLCRCs(this->data_);
-            int dummy;
-            if (checkWMBusFrame(this->data_, (size_t *)&dummy, &dummy, &dummy, false) == FrameStatus::FullFrame)
+            size_t frame_length = 0;
+            int payload_length = 0;
+            int payload_offset = 0;
+            if (checkWMBusFrame(this->data_, &frame_length, &payload_length, &payload_offset, false) == FrameStatus::FullFrame)
+            {
                 frame.emplace(this);
+            }
 
             delete this;
 

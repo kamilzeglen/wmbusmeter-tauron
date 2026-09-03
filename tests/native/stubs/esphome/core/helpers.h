@@ -4,10 +4,24 @@
 #include <functional>
 #include <optional>
 #include <vector>
+#include <string>
+#include <cstdint>
 
 namespace esphome
 {
     using std::optional;
+
+    inline std::string format_hex(const std::vector<uint8_t> &data)
+    {
+        const char *digits = "0123456789ABCDEF";
+        std::string result;
+        for (uint8_t byte : data)
+        {
+            result += digits[byte >> 4];
+            result += digits[byte & 15];
+        }
+        return result;
+    }
 
     template<typename Signature> class CallbackManager
     {
