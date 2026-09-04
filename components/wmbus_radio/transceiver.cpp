@@ -51,6 +51,14 @@ namespace esphome
                     {
                         continue;
                     }
+                    if (received == 0)
+                    {
+                        // Pure noise/false trigger, no real bytes ever arrived: stay silent.
+                        // Logging here (SPI diag reads + blocking UART prints) runs inside the
+                        // same task racing the SX1276 FIFO and can starve it long enough to
+                        // drop a real telegram that starts while we're still printing.
+                        return false;
+                    }
                     this->log_rx_failure();
                     ESP_LOGD(TAG, "Incomplete radio read: received %zu/%zu bytes", received, length);
                     ESP_LOGD(TAG, "RX timing: elapsed_us=%lu idle_us=%lu wait_us=%lu timeout_ticks=%lu recovered=%zu",
