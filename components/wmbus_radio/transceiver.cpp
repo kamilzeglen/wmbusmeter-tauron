@@ -16,6 +16,7 @@ namespace esphome
 
         bool RadioTransceiver::read_in_task(uint8_t *buffer, size_t length)
         {
+            constexpr uint32_t idle_timeout_us = 1000;
             const uint8_t *buffer_start = buffer;
             const uint8_t *buffer_end = buffer + length;
             size_t recovered_bytes = 0;
@@ -46,6 +47,10 @@ namespace esphome
                     }
                     const size_t received = buffer - buffer_start;
                     const uint32_t failed_us = micros();
+                    if (uint32_t(failed_us - last_byte_us) < idle_timeout_us)
+                    {
+                        continue;
+                    }
                     this->log_rx_failure();
                     ESP_LOGD(TAG, "Incomplete radio read: received %zu/%zu bytes", received, length);
                     ESP_LOGD(TAG, "RX timing: elapsed_us=%lu idle_us=%lu wait_us=%lu timeout_ticks=%lu recovered=%zu",

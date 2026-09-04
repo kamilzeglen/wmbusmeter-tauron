@@ -26,9 +26,11 @@ template<typename... Args> void capture(const char *format, Args... args) {
 #define pdMS_TO_TICKS(x) (x)
 bool wait_finished = false;
 uint32_t clock_us = 0;
+uint32_t next_wait_us = 1000;
 uint32_t micros() { return clock_us; }
 unsigned ulTaskNotifyTake(int, int) {
-    clock_us += 1000;
+    clock_us += next_wait_us;
+    next_wait_us = 1000;
     wait_finished = true;
     return 0;
 }
@@ -46,11 +48,19 @@ public:
     size_t remaining = 0;
     size_t delayed_bytes = 0;
     size_t snapshots = 0;
+    size_t scheduled_bytes = 0;
+    uint32_t schedule_started_us = 0;
+    uint32_t next_byte_offset_us = 80;
     void log_rx_failure() {
         assert(logs.empty());
         ++snapshots;
     }
     std::optional<uint8_t> read() {
+        if (scheduled_bytes > 0 && uint32_t(clock_us - schedule_started_us) >= next_byte_offset_us) {
+            --scheduled_bytes;
+            next_byte_offset_us += 80;
+            return 0xEF;
+        }
         if (wait_finished && delayed_bytes > 0) {
             wait_finished = false;
             --delayed_bytes;
@@ -122,6 +132,27 @@ int main() {
     assert(recovered[1] == 0xCD);
     assert(recovered[2] == 0xCD);
     assert(delayed.snapshots == 0);
+    for (uint32_t start : {uint32_t{0}, UINT32_MAX - 5}) {
+        logs.clear();
+        clock_us = start;
+        next_wait_us = 11;
+        RadioTransceiver early_tick;
+        early_tick.schedule_started_us = start;
+        early_tick.scheduled_bytes = 2;
+        uint8_t arrived[2] = {};
+        assert(early_tick.read_in_task(arrived, 2));
+        assert(arrived[0] == 0xEF && arrived[1] == 0xEF);
+        assert(early_tick.snapshots == 0);
+        logs.clear();
+        clock_us = start;
+        next_wait_us = 11;
+        RadioTransceiver empty;
+        uint8_t unread = 0xFF;
+        assert(empty.read_in_task(&unread, 1) == false);
+        assert(unread == 0xFF);
+        assert(uint32_t(clock_us - start) == 1011);
+        assert(empty.snapshots == 1);
+    }
     for (const auto &test : std::vector<std::pair<uint8_t, std::string>>{
         {0x40, "FIFO: full=0 empty=1 overrun=0 IRQ_high=1"},
         {0x90, "FIFO: full=1 empty=0 overrun=1 IRQ_high=1"}}) {

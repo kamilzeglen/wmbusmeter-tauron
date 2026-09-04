@@ -31,3 +31,5 @@ FIFO reads and FreeRTOS notifications. It checks timeout diagnostics and bytes
 that become available without a notification, with memory sanitizers enabled.
 It also checks timing fields and the SX1276 register snapshot, including that
 registers are read before logging and no FIFO data register is consumed.
+The timeout tests simulate an 11-microsecond wait at a tick boundary and
+verify the one-millisecond idle deadline, including microsecond clock wraparound.
