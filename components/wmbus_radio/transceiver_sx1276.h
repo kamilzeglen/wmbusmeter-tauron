@@ -13,6 +13,9 @@ namespace esphome
             void restart_rx() override;
             int8_t get_rssi() override;
             const char * get_name() override;
+
+        protected:
+            void log_rx_failure() override;
         };
     }
 }

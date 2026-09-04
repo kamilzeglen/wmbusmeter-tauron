@@ -29,3 +29,5 @@ These tests do not validate ESP32 hardware, radio reception, or OTA updates.
 The standalone radio-read test compiles the actual read method with simulated
 FIFO reads and FreeRTOS notifications. It checks timeout diagnostics and bytes
 that become available without a notification, with memory sanitizers enabled.
+It also checks timing fields and the SX1276 register snapshot, including that
+registers are read before logging and no FIFO data register is consumed.

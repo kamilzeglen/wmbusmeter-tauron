@@ -4,6 +4,7 @@
 
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"
+#include "esphome/core/hal.h"
 
 #include "freertos/FreeRTOS.h"
 
@@ -18,6 +19,8 @@ namespace esphome
             const uint8_t *buffer_start = buffer;
             const uint8_t *buffer_end = buffer + length;
             size_t recovered_bytes = 0;
+            const uint32_t started_us = micros();
+            uint32_t last_byte_us = started_us;
 
             while (buffer != buffer_end)
             {
@@ -25,19 +28,31 @@ namespace esphome
                 if (byte.has_value())
                 {
                     *buffer++ = *byte;
+                    last_byte_us = micros();
                     continue;
                 }
-                if (ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1)) == 0)
+                const uint32_t wait_started_us = micros();
+                const auto notification_count = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1));
+                const uint32_t wait_finished_us = micros();
+                if (notification_count == 0)
                 {
                     auto pending_byte = this->read();
                     if (pending_byte.has_value())
                     {
                         *buffer++ = *pending_byte;
                         ++recovered_bytes;
+                        last_byte_us = micros();
                         continue;
                     }
                     const size_t received = buffer - buffer_start;
+                    const uint32_t failed_us = micros();
+                    this->log_rx_failure();
                     ESP_LOGD(TAG, "Incomplete radio read: received %zu/%zu bytes", received, length);
+                    ESP_LOGD(TAG, "RX timing: elapsed_us=%lu idle_us=%lu wait_us=%lu timeout_ticks=%lu recovered=%zu",
+                             static_cast<unsigned long>(failed_us - started_us),
+                             static_cast<unsigned long>(failed_us - last_byte_us),
+                             static_cast<unsigned long>(wait_finished_us - wait_started_us),
+                             static_cast<unsigned long>(pdMS_TO_TICKS(1)), recovered_bytes);
                     for (size_t offset = 0; offset < received; offset += 32)
                     {
                         const size_t chunk_size = std::min(size_t{32}, received - offset);

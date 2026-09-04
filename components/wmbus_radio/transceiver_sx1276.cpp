@@ -98,6 +98,21 @@ namespace esphome
             return {};
         }
 
+        void SX1276::log_rx_failure()
+        {
+            const uint8_t irq_flags2 = this->spi_read(0x3F);
+            const bool irq_high = this->irq_pin_->digital_read();
+            const uint8_t irq_flags1 = this->spi_read(0x3E);
+            const uint8_t op_mode = this->spi_read(0x01);
+            const int8_t rssi = this->get_rssi();
+
+            ESP_LOGD(TAG, "RX failure: irq1=0x%02X irq2=0x%02X opmode=0x%02X RSSI=%ddBm",
+                     irq_flags1, irq_flags2, op_mode, rssi);
+            ESP_LOGD(TAG, "FIFO: full=%d empty=%d overrun=%d IRQ_high=%d",
+                     (irq_flags2 & 0x80) != 0, (irq_flags2 & 0x40) != 0,
+                     (irq_flags2 & 0x10) != 0, irq_high);
+        }
+
         void SX1276::restart_rx()
         {
             // Standby mode

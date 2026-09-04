@@ -42,6 +42,7 @@ namespace esphome
             InternalGPIOPin *irq_pin_;
 
             virtual optional<uint8_t> read() = 0;
+            virtual void log_rx_failure() {}
 
             void reset();
             void common_setup();
