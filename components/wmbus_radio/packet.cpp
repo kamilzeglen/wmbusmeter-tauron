@@ -21,12 +21,18 @@ namespace esphome
             this->data_.reserve(WMBUS_PREAMBLE_SIZE);
         }
 
-        // Determine the link mode based on the first byte of the data
+        // Determine the link mode based on the first two bytes of the data.
+        // A single 0x54 byte is not enough to commit to C1: at the -100dBm
+        // noise floor it turns up by chance and used to strand T1 packets
+        // with expected_size_ stuck at 0 ("Cannot calculate payload size"),
+        // since the C1 branch below needs a matching block-A/B byte that a
+        // genuine T1 telegram never has. Require that second byte too.
         LinkMode Packet::link_mode()
         {
             if (this->link_mode_ == LinkMode::UNKNOWN)
-                if (this->data_.size())
-                    if (this->data_[0] == WMBUS_MODE_C_PREAMBLE)
+                if (this->data_.size() >= 2)
+                    if (this->data_[0] == WMBUS_MODE_C_PREAMBLE &&
+                        (this->data_[1] == WMBUS_BLOCK_A_PREAMBLE || this->data_[1] == WMBUS_BLOCK_B_PREAMBLE))
                         this->link_mode_ = LinkMode::C1;
                     else
                         this->link_mode_ = LinkMode::T1;
